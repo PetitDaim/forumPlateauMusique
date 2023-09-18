@@ -1,0 +1,323 @@
+:root{
+    --color-gold: #fec055;
+    --color-gold-dark: #fab045;
+}
+header{
+    background-color: var( --color-gold );
+    color: black;
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding:20px;
+    padding-bottom: 30px;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.between{
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo,.login{
+    max-height: 150px;
+}
+
+.max-height-50{
+    max-height: 50px;
+}
+
+nav a{
+    padding: 15px;
+    margin:20px;
+    background-color: var( --color-gold-dark );
+    border-radius: 30px;
+    color: black;
+}
+
+main{
+    background-color: black;
+    color: #bbb;
+    padding: 20px;
+    padding-bottom: 40px;
+}
+
+#forum{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    min-height: 70vh;
+}
+
+input{
+    padding: 15px;
+    margin: 20px;
+    border-radius: 15px;
+}
+
+label{
+    cursor: pointer;
+}
+
+button{
+    padding: 15px;
+    margin:20px;
+    background-color: var( --color-gold-dark );
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.padding-5{
+    padding: 5px;
+}
+
+.success{
+    background-color: #0f0;
+    color: #000;
+}
+
+.error{
+    background-color: #f00;
+    color: #000;
+}
+
+.coche-verte,.cadenas{
+    max-width: 16px;
+    border-radius: 8px;
+}
+
+.mail{
+    max-width: 32px;
+    border-radius: 13px;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding:20px;
+    border-radius: 20px;
+    background-color: #222;
+}
+
+.card a{
+    color:#fff;
+}
+
+.card p{
+    text-align: justify;
+}
+
+.width-200{
+    min-width:200px;
+    max-width:200px;
+}
+
+textarea{
+    padding: 15px;
+    margin: 20px;
+    width: 80%;
+}
+
+h3{
+    text-align: center;
+    margin: auto;
+}
+
+.center{
+    text-align: center;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+footer{
+    padding: 20px;
+    text-align: center;
+    background-color: var( --color-gold );
+}
+
+footer a{
+    padding: 15px;
+    margin:20px;
+    background-color: var( --color-gold-dark );
+    border-radius: 30px;
+    color: black;
+}
+
+h1{
+    padding: 20px;
+    font-size:40px;
+    background-color: var( --color-gold-dark );
+    border-radius: 50px;
+}
+
+h2{
+    padding: 20px;
+    font-size:30px;
+    background-color: #222;
+    border-radius: 40px;
+}
+
+.max-width-300{
+    max-width: 300px;
+}
+
+.width-300{
+    min-width: 300px;
+    max-width: 300px;
+    width: 300px;
+}
+
+.signature{
+    max-width: 100px;
+}
+
+.mini-signature{
+    max-width: 20px;
+}
+
+ul{
+    width : 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+li{
+    list-style: none;
+    padding: 10px;
+    text-align: left;
+    background-color: var( --color-gold-dark );
+    border-radius: 20px;
+    margin: 5px;
+    color: #000;
+}
+
+.card li a{
+    text-decoration: none;
+    color: #000;
+}
+
+.video-tiny{
+    max-width: 150px;
+}
+
+.video-medium{
+    max-width: 1024px;
+}
+
+figcaption{
+    margin: auto;
+    text-align: center;
+}
+
+.message1{
+    margin: 15px;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.width-500{
+    min-width: 500px;
+    max-width: 500px;
+    width: 500px;
+}
+
+.max-width-500{
+    max-width: 500px;
+}
+
+.width-600{
+    min-width: 600px;
+    max-width: 600px;
+}
+
+#burger-menu{
+    visibility: hidden;
+}
+
+#close-menu-boutton{
+    visibility: hidden;
+}
+
+#nav-left{
+    height: 120px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 1000px) {
+    #burger-menu{
+        visibility:visible;
+        padding: 20px;
+        max-width: 25px;
+        width: 25px;
+        cursor: pointer;
+    }
+    #close-menu-boutton{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+    }
+    #nav-bar{
+        position: relative;
+        visibility:hidden;
+        background-color: var( --color-gold );
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+        padding-bottom: 200px;
+        border-radius: 15px;
+        border: #000 solid;
+    }
+    #nav-left{
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+    }
+    #nav-right{
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+    }
+    h1{
+        padding: 20px;
+        font-size:20px;
+        background-color: var( --color-gold-dark );
+        border-radius: 30px;
+    }
+    .logo,.login{
+        max-height: 75px;
+    }
+    
+}
