@@ -266,6 +266,11 @@ figcaption{
     align-items: center;
 }
 
+.presentation{
+    width: 80vw;
+    font-size: 18px;
+    text-align: center;
+}
 @media (max-width: 1000px) {
     #burger-menu{
         visibility:visible;

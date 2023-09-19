@@ -20,11 +20,16 @@
         public function index(){
     
             $categoryManager = new CategoryManager();
-
+            // Définition de la description de la page.
+            $description = "Ce forum de musique présente diverses catégorie de publications de sujets permettant à des artistes qui souhapitent émerger, de faire connaître leurs créations musicales";
+            // Définition du titre de la page.
+            $title = "Accueil du forum de musique";
             return [
-                "view" => VIEW_DIR."forum/categoriesList.php",
+                "view" => VIEW_DIR."home/index.php",
                 "data" => [
-                    "categories" => $categoryManager->findAll(["categoryName", "ASC"])
+                    "categories" => $categoryManager->findAll(["categoryName", "ASC"]),
+                    'title' => $title,
+                    'description' => $description
                 ]
             ];
  
@@ -34,7 +39,10 @@
     
             return [
                 "view" => VIEW_DIR."security/registerForm.php",
-                "data" => null
+                "data" => [
+                    'title' => "Formulaire d'enregistrement sur le forum de musique'",
+                    'description' => "Le Formulaire d'enregistrement sur le forum contient un pseudo, un email et un mot de passe sécurisé (⩾ 12 caractères AlphaNumériques avec caractères spéciaux) à renseigner..."
+                ]
             ];
  
         }
@@ -121,11 +129,18 @@
                 }
                 else {
                     Session::addFlash('success', "Votre utilisateur a bien été inscrit");
+                    return $this->loginForm();
                 }
             }
             return [
                 "view" => VIEW_DIR."security/registerForm.php",
-                "data" => [ "user" => $user, "password" => $password, "passwordConfirm" => $passwordConfirm ]
+                "data" => [
+                    "user" => $user,
+                    "password" => $password,
+                    "passwordConfirm" => $passwordConfirm,
+                    'title' => "Formulaire d'enregistrement sur le forum de musique'",
+                    'description' => "Le Formulaire d'enregistrement sur le forum contient un pseudo, un email et un mot de passe sécurisé (⩾ 12 caractères AlphaNumériques avec caractères spéciaux) à renseigner..."
+                ]
             ];
 
         }
@@ -133,11 +148,14 @@
         /**
          * Méthode de presentation du formulaire de connection
          */
-        public function connexionForm(){
+        public function loginForm(){
     
             return [
-                "view" => VIEW_DIR."security/connexionForm.php",
-                "data" => null
+                "view" => VIEW_DIR."security/loginForm.php",
+                "data" => [
+                    'title' => "Formulaire de connection",
+                    'description' => "Le Formulaire de connection contient un pseudo, un email et un mot de passe sécurisé (⩾ 12 caractères AlphaNumériques avec caractères spéciaux) à renseigner..."
+                ]
             ];
  
         }
@@ -145,7 +163,8 @@
         /**
          * Méthode de connection
          */
-        public function connexion(){
+        public function login()
+        {
             // Récupère le Pseudo, le Password et l'Email
             $pseudo = filter_input( INPUT_POST, "pseudo", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $password = filter_input( INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
@@ -159,10 +178,12 @@
                 if( password_verify( $password, $user->getPassword() ) ) {
                     Session::setUser( $user );
                     if( $user->getBanned() ) {
-                        Session::addFlash( 'Error', "Vous avez été banni, Veuilez contacter un administrateur." );
+                        Session::addFlash( 'error', "Vous avez été banni, Veuilez contacter un administrateur." );
+                    }
+                    else{
+                        Session::addFlash( 'success', "Vous êtes bien connecté." );
                     }
                     Session::restoreUrl();
-    
                     return;
                 }
                 else{
@@ -182,11 +203,15 @@
                 $user->setPseudo( $pseudo );
                 $user->setEmail( $email );
                 Session::addFlash( 'error', "l'autentification a échoué" );
-                // Renvoie la vue du formulaire de connexion
+                // Renvoie la vue du formulaire de login
                 // ainsi que le paramètre user
                 return [
-                    "view" => VIEW_DIR."security/connexionForm.php",
-                    "data" => [ "user" => $user ]
+                    "view" => VIEW_DIR."security/loginForm.php",
+                    "data" => [
+                        "user" => $user,
+                        'title' => "Formulaire de connection",
+                        'description' => "Le Formulaire de connection contient un pseudo, un email et un mot de passe sécurisé (⩾ 12 caractères AlphaNumériques avec caractères spéciaux) à renseigner..."
+                    ]
                 ];
             }
         }
@@ -203,12 +228,19 @@
         }
 
         /**
-         * Méthode pour préparer la liste des utilisateurs
+         * Méthode qui prépare et renvoie vers la liste des utilisateurs
          */
         public function usersList( $id=null )
         {
             if( Session::isAdmin() ) {
+                // Intancie le manager des utilisateurs
                 $manager = new UserManager();
+                // Définit le titre de la page
+                $title = "Liste des utilisateurs du forum de musique";
+                // definit la description de la page
+                $description = "Présentation d'artistes qui souhapitent émerger et faire connaître leurs créations musicales, plus d'utilisateurs du forum souhaitant encourager ces artistes";
+                // définit le fait que la page ne doit pas être indexée par les moteurs de recherche
+                $noIndex = true;
                 // Récupère la liste de tous les utilisateurs triées par ordre alphabétique du pseudo
                 $users = $manager->findAll( ["pseudo", "ASC"] );
                 return [
@@ -330,7 +362,7 @@
             $mailSend = false;
             if( ! Session::getUser() ) {
                 Session::addFlash( 'error', "Il faut être connecté pour envoyer un message à l'administrateur du forum !" );
-                return $this->connexionForm();
+                return $this->loginForm();
             }
             $object = filter_input( INPUT_POST, "object", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $objectLength = strlen( $object );

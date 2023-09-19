@@ -3,7 +3,7 @@
     if( isset($result["data"]['post']) ) $post = $result["data"]['post'];
 ?>
     <!-- Titre de la page : Ajout de sujet... -->
-    <h2>Ajouter un post au sujet : <?= isset($topic)?$topic->getTitle():"" ?></h2>
+    <h2>Répondre au sujet : <?= isset($topic)?$topic->getTitle():"" ?></h2>
 
     <div class="card">
         <!-- Formulaire d'ajout de sujet... -->

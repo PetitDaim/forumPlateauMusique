@@ -5,7 +5,7 @@
     foreach( $users as $user ){
 ?>
     <p class="card">
-        <a href="./?ctrl=security&action=userDetail&id=<?= $user->getId() ?>"><sub><img src="<?= $user->getAvatar() ?>" alt="Avatar de <?= $user->getPseudo() ?>" class="mini-signature"/></sub> <?= $user->getPseudo() ?>: &lt;<?= $user->getEmail() ?>&gt;</a>
+        <a href="./?ctrl=security&action=userDetail&id=<?= $user->getId() ?>"><sub><img src="<?= $user->getAvatar() ?>" alt="<?= $user->getPseudo() ?>" class="mini-signature"/></sub> <?= $user->getPseudo() ?>: &lt;<?= $user->getEmail() ?>&gt;</a>
     </p>
 <?php
     }

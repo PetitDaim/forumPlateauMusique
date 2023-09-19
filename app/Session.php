@@ -60,7 +60,7 @@
                 $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
             }
             else {
-                $subDir=(true)?'ForumMusique/forumPlateau/':"forumMusique/";
+                $subDir=(false)?'ForumMusique/forumPlateau/':"forumPlateauMusique/";
                 $pageURL = str_replace( "/ElanFormation/exercices/".$subDir."public", ".", $_SERVER["REQUEST_URI"] );
             }
             return $pageURL;
@@ -80,8 +80,8 @@
                 $srv = '.';
             }
             $url = Session::currentPageUrl();
-            if( ( $url != "$srv/?ctrl=security&action=connexionForm" ) &&
-            ( $url != "$srv/?ctrl=security&action=connexion" ) &&
+            if( ( $url != "$srv/?ctrl=security&action=loginForm" ) &&
+            ( $url != "$srv/?ctrl=security&action=login" ) &&
             ( $url != "$srv/?ctrl=security&action=logout" ) &&
             ( $url != "$srv/?ctrl=security&action=registerForm") &&
             ( $url != "$srv/?ctrl=security&action=register") ) {

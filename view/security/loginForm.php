@@ -7,7 +7,7 @@
     <h2>Authentification :</h2>
 
     <!-- Formulaire d'inscription -->
-    <form action="./?ctrl=security&action=connexion" method="POST" class="card">
+    <form action="./?ctrl=security&action=login" method="POST" class="card">
 
         <!-- Demander le Pseudo -->
 <?php

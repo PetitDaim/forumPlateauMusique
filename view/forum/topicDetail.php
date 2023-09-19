@@ -28,7 +28,7 @@
                 <?= $post->getMessage() ?>
                 <figure>
                     <a href="./?ctrl=security&action=userDetail&id=<?= $post->getUser()->getId() ?>">
-                        <img src="<?= $post->getUser()->getAvatar() ?>" alt="Avatar de <?= $post->getUser()->getPseudo() ?>" class="signature"/>
+                        <img src="<?= $post->getUser()->getAvatar() ?>" alt="<?= $post->getUser()->getPseudo() ?>" class="signature"/>
                     </a>
                     <figcaption><?= $post->getUser()->getPseudo() ?></figcaption>
                 </figure>

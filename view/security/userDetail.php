@@ -17,7 +17,7 @@
     }
 ?>
 <figure class="card">
-    <img src="<?= (isset($user)&&$user)?$user->getAvatar():"./img/Users/undefinedUserImg.jpg" ?>" alt="Avatar de <?= (isset($user)&&$user)?$user->getPseudo():"" ?>"/>
+    <img src="<?= (isset($user)&&$user)?$user->getAvatar():"./img/Users/undefinedUserImg.jpg" ?>" alt="<?= (isset($user)&&$user)?$user->getPseudo():"" ?>"/>
     <figcaption><?= (isset($user)&&$user)?$user->getPseudo():"" ?><?= ((isset($user)&&$user) && ( $user == App\Session::getUser() ) )? " : &lt;".$user->getEmail()."&gt;" : "" ?></figcaption>
 <?php
     if( App\Session::isAdmin() ) {

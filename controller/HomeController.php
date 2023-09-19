@@ -19,9 +19,13 @@
         {
             // instancien le manager des catégories
             $categoryManager = new CategoryManager();
+            // Définit le titre de la page
+            $title = "Accueil du forum de musique";
+            // definit la description de la page
+            $description = "Ce forum de musique présente diverses catégorie de publications de sujets permettant à des artistes qui souhapitent émerger, de faire connaître leurs créations musicales";
             // Renvoie la vue de la liste des catégories
             return [
-                "view" => VIEW_DIR."forum/categoriesList.php",
+                "view" => VIEW_DIR."home/index.php",
                 "data" => [
                     // Passe la liste des catégories triées par nom de catégorie croissant
                     "categories" => $categoryManager->findAll(["categoryName", "ASC"])
@@ -29,28 +33,16 @@
             ];
  
         }
-            
-        /**
-         * Méthode qui prépare et renvoie vers la liste des utilisateurs
-         */
-        public function listUsers()
-        {
-            // Intancie le manager des utilisateurs
-            $manager = new UserManager();
-            // Récupère la liste des utilisateurs triée par pseudo croissant
-            $users = $manager->findAll( [ 'pseudo', 'ASC' ]);
-            // Renvoie la vue de la liste des utilisateurs
-            return [
-                    "view" => VIEW_DIR."security/listUsers.php",
-                    "data"=> ["users" => $users]
-            ];
-        }
   
         /**
          * Méthode qui renvoie vers les règles du forum
          */
         public function forumRules()
         {
+            // Définit le titre de la page
+            $title = "Règles du forum de musique";
+            // definit la description de la page
+            $description = "Ce forum de musique possède des règles d'utilisation qu'il convient de respecter sous peine d'être banni du forum";
             return [
                 "view" => VIEW_DIR."home/rules.php"
             ];
@@ -61,6 +53,10 @@
          */
         public function mentionsLegales()
         {
+            // Définit le titre de la page
+            $title = "Mentions légales du forum de musique";
+            // definit la description de la page
+            $description = "Les mentions légales présentent principalement l'auteur du forum, les droits d'auteur et l'hébergeur du forum.";
             return [
                 "view" => VIEW_DIR."home/mentionsLegales.php"
             ];

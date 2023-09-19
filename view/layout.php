@@ -4,6 +4,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="<?= isset($result["data"]['description']) ? $result["data"]['description'] : "Forum de musique ayant pour but de présenter des artistes souhaitant émerger" ?>">
+        <meta name="title" content="<?= isset( $result["data"]['title'] ) ? $result["data"]['title'] : "Forum de Musique" ?>">
+        <meta name="robots" content="<?= isset( $result["data"]['noIndex'] ) ? "noindex, nofollow" : "index, follow" ?>">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="shortcut icon" href="./img/logo.jpg" type="image/x-icon">
         <script src="https://cdn.tiny.cloud/1/zg3mwraazn1b2ezih16je1tc6z7gwp5yd4pod06ae5uai8pa/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
@@ -54,7 +57,7 @@
     }
 ?>
                         </div>
-                        <img src="./img/close.png" alt="Close Menu Bouton" id="close-menu-boutton"/>
+                        <img src="./img/close.png" alt="Close Menu" id="close-menu-boutton"/>
                         <div id="nav-right">
 <?php
     // Si l'utilisateur connecté est admin et qu'il y a des messages pour l'admin
@@ -67,13 +70,13 @@
     if(App\Session::getUser()){
 ?>
                                 <a href="./?ctrl=security&action=userDetail&id=<?= App\Session::getUser()->getId() ?>"><span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser()?></a>
-                                <a href="./?ctrl=security&action=logout">Déconnexion</a>
+                                <a href="./?ctrl=security&action=logout">déconnection</a>
 <?php
     }
     // Sinon
     else{
 ?>
-                                <a href="./?ctrl=security&action=connexionForm">Connexion</a>
+                                <a href="./?ctrl=security&action=loginForm">connection</a>
                                 <a href="./?ctrl=security&action=registerForm">Inscription</a>
 <?php
     }

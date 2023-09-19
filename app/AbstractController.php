@@ -8,10 +8,10 @@
         public function redirectTo($ctrl = null, $action = null, $id = null){
 
             if($ctrl != "home"){
-                $url = $ctrl ? "/".$ctrl : "";
-                $url.= $action ? "/".$action : "";
-                $url.= $id ? "/".$id : "";
-                $url.= ".html";
+                $url = $ctrl ? "./?ctrl=".$ctrl : "";
+                $url.= $action ? "&action=".$action : "";
+                $url.= $id ? "&id=".$id : "";
+                // $url.= ".html";
             }
             else $url = "./";
             header("Location: $url");
@@ -22,7 +22,7 @@
         public function restrictTo($role){
             
             if(!Session::getUser() || !Session::getUser()->hasRole($role)){
-                $this->redirectTo("security", "connexionForm");
+                $this->redirectTo("security", "loginForm");
             }
             return;
         }

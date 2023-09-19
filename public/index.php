@@ -22,7 +22,7 @@
     //et on intègre la classe Session qui prend la main sur les messages en session
     use App\Session as Session;
 
-    // Sauvegarde l'url pour pouvoir être restaurée si connexion ou logout
+    // Sauvegarde l'url pour pouvoir être restaurée si login ou logout
     Session::saveUrl();
 
     //---------REQUETE HTTP INTERCEPTEE-----------

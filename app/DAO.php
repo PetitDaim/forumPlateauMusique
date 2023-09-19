@@ -6,7 +6,7 @@
      * 
      * @property static $bdd l'instance de PDO que la classe stockera lorsque connect() sera appelé
      *
-     * @method static connect() connexion à la BDD
+     * @method static connect() login à la BDD
      * @method static insert() requètes d'insertion dans la BDD
      * @method static select() requètes de sélection
      */
