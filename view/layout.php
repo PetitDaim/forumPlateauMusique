@@ -92,7 +92,7 @@
             </div>
             <!-- Footer du fichier html de sortie -->
             <footer>
-                <p>&copy; 2023 - Forum Musique - <a href="./?ctrl=home&action=forumRules">Règlement du forum</a> - <a href="./?ctrl=home&action=mentionsLegales">Mentions légales</a></p>
+                &copy; 2023 - Forum Musique  <a href="./?ctrl=home&action=forumRules">Règlement du forum</a> <a href="./?ctrl=home&action=mentionsLegales">Mentions légales</a>
                 <!-- <button id="ajaxbtn">Surprise en Ajax !</button> -> cliqué <span id="nbajax">0</span> fois -->
             </footer>
         </div>
