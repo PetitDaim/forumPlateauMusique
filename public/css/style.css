@@ -300,6 +300,7 @@ figcaption{
         padding-bottom: 200px;
         border-radius: 15px;
         border: #000 solid;
+        z-index: 1000;
     }
     #nav-left{
         height: 120px;
