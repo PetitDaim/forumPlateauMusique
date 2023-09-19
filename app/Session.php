@@ -103,16 +103,36 @@
         /**
         *   met un user dans la session (pour le maintenir connecté)
         */
-        public static function setUser($user){
+        public static function setUser($user)
+        {
             $_SESSION["user"] = $user;
         }
 
-        public static function getUser(){
+        /**
+        *   renvoie le user connecté
+        */
+        public static function getUser()
+        {
             return (isset($_SESSION['user'])) ? $_SESSION['user'] : false;
         }
 
-        public static function isAdmin(){
+        /**
+        *   renvoie true si le user connecté est admin
+        */
+        public static function isAdmin()
+        {
             if(self::getUser() && self::getUser()->hasRole("ROLE_ADMIN")){
+                return true;
+            }
+            return false;
+        }
+
+        /**
+        *   renvoie true si le user connecté est artiste
+        */
+        public static function isArtist()
+        {
+            if(self::getUser() && self::getUser()->hasRole("ROLE_ARTIST")){
                 return true;
             }
             return false;

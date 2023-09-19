@@ -25,7 +25,7 @@
             $description = "Ce forum de musique présente diverses catégorie de publications de sujets permettant à des artistes qui souhapitent émerger, de faire connaître leurs créations musicales";
             // Renvoie la vue de la liste des catégories
             return [
-                "view" => VIEW_DIR."home/index.php",
+                "view" => VIEW_DIR."home/home.php",
                 "data" => [
                     // Passe la liste des catégories triées par nom de catégorie croissant
                     "categories" => $categoryManager->findAll(["categoryName", "ASC"])

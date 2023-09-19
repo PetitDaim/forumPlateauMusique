@@ -26,6 +26,7 @@
 ?>
             <p class="width-300 center">
                 <?= $post->getMessage() ?>
+                <!-- AVATAR de l'auteur du post -->
                 <figure>
                     <a href="./?ctrl=security&action=userDetail&id=<?= $post->getUser()->getId() ?>">
                         <img src="<?= $post->getUser()->getAvatar() ?>" alt="<?= $post->getUser()->getPseudo() ?>" class="signature"/>
@@ -46,6 +47,7 @@
                     if( $count ) {
                         if( App\Session::getUser() ) {
 ?>
+            <!-- BOUTTON de like/unlike du post -->
             <form action="./?ctrl=forum&action=likePost&id=<?= $post->getId() ?>" method="POST">
                 <button type="submit" class="padding-5">
                     <figure>
@@ -64,6 +66,7 @@
                 if( ! $count ) {
                     if( App\Session::getUser() ) {
 ?>
+            <!-- BOUTTON de like/unlike du topic -->
             <form action="./?ctrl=forum&action=likeTopic&id=<?= $topic->getId() ?>" method="POST">
                 <button type="submit" class="padding-5">
                     <figure>
@@ -76,6 +79,7 @@
                     }
                     if( ( ! $topic->getClosed() ) && App\Session::getUser() && ( ! App\Session::getUser()->getBanned() ) ) {
 ?>
+            <!-- BOUTTON pour commenter le topic -->
             <form action="./?ctrl=forum&action=postForm&id=<?= $topic->getId() ?>" method="POST">
                 <button type="submit">Commenter le sujet</button>
             </form>
@@ -83,6 +87,7 @@
                     }
                     if( ( App\Session::isAdmin() || ( App\Session::getUser() == $topic->getUser() ) ) ) {
 ?>
+            <!-- BOUTTON de lock/unlock -->
             <form action="./?ctrl=forum&action=topicLockUnLock&id=<?= $topic->getId() ?>" method="POST">
                 <button type="submit" class="<?= $topic->getClosed()?"success":"error" ?>"><?= $topic->getClosed()?"Réouvrir":"Fermer" ?> le sujet</button>
             </form>

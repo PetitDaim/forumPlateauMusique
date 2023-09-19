@@ -13,7 +13,7 @@
 <div class="card max-width-300">
     <?= $category->getPresentation() ?>
 <?php
-        if( ( App\Session::getUser() ) && ( ! App\Session::getUser()->getBanned() ) ) {
+        if( ( App\Session::getUser() ) && ( ! App\Session::getUser()->getBanned() ) && App\Session::isArtist() ) {
 ?>
     <form action="./?ctrl=forum&action=topicAddForm&id=<?= $category->getId() ?>" method="POST">
         <button type="submit">Poster <?= $category->getCategoryNameSingulier() ?></button>

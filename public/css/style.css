@@ -230,8 +230,12 @@ li{
 }
 
 figcaption{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     margin: auto;
-    text-align: center;
 }
 
 .message1{
@@ -276,6 +280,22 @@ figcaption{
     font-size: 18px;
     text-align: center;
 }
+strong{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.figure-tiny{
+    max-width: 80%;
+}
+
+.img-tiny{
+    max-width: 80%;
+}
+
 @media (max-width: 1000px) {
     #burger-menu{
         visibility:visible;
@@ -330,7 +350,33 @@ figcaption{
     .logo,.login{
         max-height: 75px;
     }
+        
+}
+@media ( max-width: 650px ) {
     
+    .width-500{
+        min-width: 70vw;
+        max-width: 70vw;
+        width: 70vw;
+    }
+    
+    .max-width-500{
+        max-width: 70vw;
+    }
+    
+    .width-600{
+        min-width: 80vw;
+        max-width: 80vw;
+    }
+    h2{
+        font-size:20px;
+    }
+    
+}
+@media( max-width: 200px ) {
+    h3{
+        font-size:15px;
+    }
 }
 @media (min-width: 1001px) {
     #burger-menu{

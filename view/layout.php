@@ -43,9 +43,9 @@
                     <nav id="nav-bar">
                         <div id="nav-left">
                             <a href="./">Accueil</a>
-                            <a href="./?ctrl=forum&action=topicsList">Les dix derniers sujets</a>
+                            <a href="./?ctrl=forum&action=topicsList">Dix derniers sujets</a>
                             <form action="./" method="get" class="center">
-                                <input type="text" name="recherche" id="recherche" placeholder="Rechercher dans les topics" value="<?=isset( $recherche ) ? $recherche : "" ?>">
+                                <input type="text" name="recherche" id="recherche" placeholder="Rechercher dans les sujets" value="<?=isset( $recherche ) ? $recherche : "" ?>">
                             </form>
 <?php
     // Si l'utilisateur connecté est admin
