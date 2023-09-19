@@ -33,9 +33,9 @@
                     <figcaption><?= $post->getUser()->getPseudo() ?></figcaption>
                 </figure>
 <?php
-                    if( App\Session::isAdmin() ) {
+                    if( App\Session::isAdmin() && ( $post->getUser() != App\Session::getUser() ) ) {
 ?>
-                                    <form action="./?ctrl=security&action=userBann&id=<?= $post->getUser()->getId() ?>" method="POST">
+                                    <form action="./?ctrl=security&action=userBannUnbann&id=<?= $post->getUser()->getId() ?>" method="POST">
                                         <button type="submit" class="error">Bannir le posteur du message</button>
                                     </form>
 <?php
@@ -83,7 +83,7 @@
                     }
                     if( ( App\Session::isAdmin() || ( App\Session::getUser() == $topic->getUser() ) ) ) {
 ?>
-            <form action="./?ctrl=forum&action=topicLock&id=<?= $topic->getId() ?>" method="POST">
+            <form action="./?ctrl=forum&action=topicLockUnLock&id=<?= $topic->getId() ?>" method="POST">
                 <button type="submit" class="<?= $topic->getClosed()?"success":"error" ?>"><?= $topic->getClosed()?"Réouvrir":"Fermer" ?> le sujet</button>
             </form>
 <?php

@@ -627,7 +627,7 @@
          * Méthode qui permet de locker et d'unlocker un sujet (topic)
          * L'id représente l'id tu topic
          */
-        public function topicLock( $id )
+        public function topicLockUnlock( $id )
         {
             // Initialise la variable de succes ou d'échec de la méthode
             $isSuccess = false;
@@ -641,7 +641,7 @@
                 // Si le topic est fermé, le réouvre
                 if( $topic->getClosed() ) $topic->setClosed( 0 );
                 // Sinon, le ferme
-                else $topic->setClosed( true );
+                else $topic->setClosed( 1 );
                 // Essaie d'enregistrer les modifs en BDD
                 try
                 {

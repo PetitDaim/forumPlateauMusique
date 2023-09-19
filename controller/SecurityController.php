@@ -293,7 +293,7 @@
             ];
         }
 
-        public function userBann( $id ){
+        public function userBannUnbann( $id ){
             $isSuccess = false;
 
             $userManager = new UserManager();
@@ -303,7 +303,7 @@
             // Initialisation d'une variable pour le messaged'erreur
             $de = "";
             // Vérifie que l'utilisateur connecté est bien l'administrateur du forum
-            if( Session::isAdmin() ) {
+            if( Session::isAdmin() && ( ! ((isset($user)&&$user)&&($user==Session::getUser())) ) ) {
                 if( $user->getBanned() ) {
                     $user->setBanned( 0 );
                     // Modification d'une variable pour le messaged'erreur
@@ -324,36 +324,6 @@
             }
             else {
                 Session::addFlash( 'error', "Impossible de ".$de."bannir le posteur du message !!!" );
-                return $this->index();
-            }
-        }
-
-        /**
-         * Méthode qu
-         */
-        public function userUnbann( $id ){
-            $isSuccess = false;
-
-            $userManager = new UserManager();
-
-            $user = $userManager->findOneById( $id );
-
-            if( Session::isAdmin() ) {
-                $user->setBanned( 0 );
-                try{
-                    $userManager->update( $user );
-                    $isSuccess = true;
-                }
-                catch( Throwable $err )
-                {
-                    echo $err->getMessage();
-                }
-            }
-            if( $isSuccess ) {
-                return $this->userDetail( $user->getId() );
-            }
-            else {
-                Session::addFlash( 'error', "Impossible de débannir le posteur du message !!!" );
                 return $this->index();
             }
         }

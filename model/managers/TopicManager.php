@@ -20,15 +20,18 @@
          */
         public function findAllWhereCategory($id, $order = null)
         {
+            // Set order by query in $order givven
             $orderQuery = ($order) ?                 
                 "ORDER BY ".$order[0]. " ".$order[1] :
                 "";
 
+            // Crée la requete sql avec la recherche par category_id, (et avec l'order by) (en se premunissant de l'injection sql)
             $sql = "SELECT *
                     FROM ".$this->tableName." a
                     WHERE a.category_id = :id
                     ".$orderQuery;
 
+            // Renvoie la liste des topics de la catégorie ($id)
             return $this->getMultipleResults(
                 DAO::select($sql, [':id' => $id]), 
                 $this->className
@@ -40,15 +43,19 @@
          */
         public function findAllWhereSearch( $recherche, $order = null)
         {
+            // Set order by query in $order givven
             $orderQuery = ($order) ?                 
                 "ORDER BY ".$order[0]. " ".$order[1] :
                 "";
 
+            // Crée la requete sql avec la recherche par category_id, (et avec l'order by) (sans se prémunir de l'injection sql)
+            // Il semblerait qu'il est impossible de se prémunir de l'injection sql dans un like %xxx%
             $sql = "SELECT *
                     FROM ".$this->tableName." t
                     WHERE t.title LIKE '%$recherche%' 
                     ".$orderQuery;
 
+            // Renvoie la liste des topics contenant $recherche dans le titre
             return $this->getMultipleResults(
                 DAO::select($sql), 
                 $this->className
@@ -59,15 +66,15 @@
          * Méthode qui renvoie le nombre de sujets qui appartiennent à une catégorie
          * id correspont à l'id de la catégorie
          */
-        public function countAllWhereCategory($id){
-
+        public function countAllWhereCategory($id) : int
+        {
+            // Crée la requete sql avec la recherche par category_id, (en se premunissant de l'injection sql)
             $sql = "SELECT COUNT(a.id_topic) AS c
                     FROM ".$this->tableName." a
                     WHERE a.category_id = :id";
 
-            return $this->getSingleScalarResult(
-                DAO::select($sql, [':id' => $id])
-            );
+            // Renvoie la liste des topics contenant $recherche dans le titre
+            return intval( $this->getSingleScalarResult( DAO::select($sql, [':id' => $id], false ) ) );
         }
 
         public function update( $topic ) {

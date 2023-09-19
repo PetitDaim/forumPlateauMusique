@@ -112,7 +112,7 @@
                 $topicManager = new TopicManager();
     
                 // Renvoie le COUNT() AS c
-                return intval( $topicManager->countAllWhereCategory($this->getId())['c'] );
+                return $topicManager->countAllWhereCategory($this->getId());
         }
 
         /**

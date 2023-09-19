@@ -20,9 +20,9 @@
     <img src="<?= (isset($user)&&$user)?$user->getAvatar():"./img/Users/undefinedUserImg.jpg" ?>" alt="<?= (isset($user)&&$user)?$user->getPseudo():"" ?>"/>
     <figcaption><?= (isset($user)&&$user)?$user->getPseudo():"" ?><?= ((isset($user)&&$user) && ( $user == App\Session::getUser() ) )? " : &lt;".$user->getEmail()."&gt;" : "" ?></figcaption>
 <?php
-    if( App\Session::isAdmin() ) {
+    if( App\Session::isAdmin() && ( ! ((isset($user)&&$user)&&($user==App\Session::getUser())) ) ) {
 ?>
-    <form action="./?ctrl=security&action=user<?= ((isset($user)&&$user)&&$user->getBanned()) ? "Unb":"B" ?>ann&id=<?= (isset($user)&&$user)?$user->getId():0 ?>" method="POST">
+    <form action="./?ctrl=security&action=userBannUnbann&id=<?= (isset($user)&&$user)?$user->getId():0 ?>" method="POST">
         <button type="submit" class="<?= ((isset($user)&&$user)&&$user->getBanned()) ? "success":"error" ?>"><?= ((isset($user)&&$user)&&$user->getBanned()) ? "Unb":"B" ?>ann</button>
     </form>
 <?php
