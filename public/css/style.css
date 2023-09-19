@@ -28,7 +28,7 @@ nav{
 
 .between{
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
 }
 
 .logo,.login{
@@ -331,4 +331,24 @@ figcaption{
         max-height: 75px;
     }
     
+}
+@media (min-width: 1001px) {
+    #burger-menu{
+        visibility:hidden;
+    }
+    #nav-bar{
+        visibility:visible;
+    }
+    #nav-left{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #nav-right{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

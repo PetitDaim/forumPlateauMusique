@@ -44,7 +44,7 @@
                         <div id="nav-left">
                             <a href="./">Accueil</a>
                             <a href="./?ctrl=forum&action=topicsList">Les dix derniers sujets</a>
-                            <form action="./?action=search" method="get" class="center">
+                            <form action="./" method="get" class="center">
                                 <input type="text" name="recherche" id="recherche" placeholder="Rechercher dans les topics" value="<?=isset( $recherche ) ? $recherche : "" ?>">
                             </form>
 <?php

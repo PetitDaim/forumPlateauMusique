@@ -17,6 +17,9 @@
 
     class SecurityController extends AbstractController implements ControllerInterface{
 
+        /**
+         * Méthode appelée par défaut : Renvoie la liste des catégories
+         */
         public function index(){
     
             $categoryManager = new CategoryManager();
@@ -223,8 +226,9 @@
         {
             Session::setUser( null );
             unset( $_SESSION );
-            // $this->redirectTo( 'home', 'index' );
-            header( 'location: ./' );
+            // Redirige vers la page d'accueil du forum
+            $this->redirectTo( 'home', 'index' );
+            // header( 'location: ./' );
         }
 
         /**
