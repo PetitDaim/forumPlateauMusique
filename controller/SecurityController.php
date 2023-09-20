@@ -546,6 +546,7 @@
          */
         public function passwordModify()
         {
+            $hasErrors = false;
             $password = filter_input( INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $passwordNew = filter_input( INPUT_POST, "passwordNew", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $passwordConfirm = filter_input( INPUT_POST, "passwordConfirm", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
