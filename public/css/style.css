@@ -26,6 +26,11 @@ nav{
     gap: 20px;
 }
 
+header .flex-row{
+    align-items: center;
+    gap: 0px;
+}
+
 .between{
     justify-content: space-between;
     align-items: stretch;
@@ -351,6 +356,16 @@ strong{
         max-height: 75px;
     }
         
+}
+@media ( max-width: 803px ) {
+    
+    .flex-row{
+        justify-content: center;
+    }
+    header .flex-row{
+        justify-content: space-between;
+    }
+
 }
 @media ( max-width: 650px ) {
     

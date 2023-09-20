@@ -37,6 +37,7 @@
                             <img src="<?= (App\Session::getUser()) ? App\Session::getUser()->getAvatar() : "./img/logo.jpg" ?>" alt="Logo clef de sol" class="login">
                         </figure>
                     </div>
+                    <!-- MENU -->
                     <div id="burger-menu">
                             <img src="./img/burgerMenu.png" alt="Burger menu" class="burger-menu" width="50px"/>
                     </div>
