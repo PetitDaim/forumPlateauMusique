@@ -3,14 +3,15 @@
 
     include_once( "../controller/utils/nePasUploader.php" );
 
-    class Session{
-
+    class Session
+    {
         private static $categories = ['error', 'success'];
 
         /**
         *   ajoute un message en session, dans la catégorie $categ
         */
-        public static function addFlash($categ, $msg){
+        public static function addFlash($categ, $msg)
+        {
             if( ! in_array( $categ, Session::$categories ) ) return;
             $_SESSION[$categ] = $msg;
         }
@@ -21,7 +22,8 @@
         public static function getFlash($categ)
         {
             if( ! in_array( $categ, Session::$categories ) ) return "";
-            if(isset($_SESSION[$categ])){
+            if(isset($_SESSION[$categ]))
+            {
                 $msg = $_SESSION[$categ];  
                 unset($_SESSION[$categ]);
             }
@@ -33,16 +35,18 @@
         /**
         *   ajoute un message en session, dans la catégorie $categ
         */
-        public static function addErrors($categ, $msg){
+        public static function addErrors($categ, $msg)
+        {
             $_SESSION['local_errors'][$categ] = $msg;
         }
 
         /**
         *   renvoie un message de la catégorie $categ, s'il y en a !
         */
-        public static function getErrors($categ){
-            
-            if(isset($_SESSION['local_errors'][$categ])){
+        public static function getErrors($categ)
+        {
+            if(isset($_SESSION['local_errors'][$categ]))
+            {
                 $msg = $_SESSION['local_errors'][$categ];  
                 unset($_SESSION['local_errors'][$categ]);
             }
@@ -51,15 +55,21 @@
             return $msg;
         }
 
-        public static function currentPageURL() {
+        /**
+         * Méthode qui renvoie l'URL de la page courante
+         */
+        public static function currentPageURL() 
+        {
             $pageURL=".";
-            if( IsProd ) {
+            if( IsProd ) 
+            {
                 $pageURL = 'http';
                 if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
                 $pageURL .= "://";
                 $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
             }
-            else {
+            else 
+            {
                 $subDir=(false)?'ForumMusique/forumPlateau/':"forumPlateauMusique/";
                 $pageURL = str_replace( "/ElanFormation/exercices/".$subDir."public", ".", $_SERVER["REQUEST_URI"] );
             }
@@ -69,35 +79,42 @@
         /**
         *   ajoute l'url en session
         */
-        public static function saveUrl(){
-            if( IsProd ) {
+        public static function saveUrl()
+        {
+            if( IsProd ) 
+            {
                 $srv = 'http';
                 if ($_SERVER["HTTPS"] == "on") {$srv .= "s";}
                 $srv .= "://";
                 $srv .= $_SERVER["SERVER_NAME"]."/public";
             }
-            else {
+            else 
+            {
                 $srv = '.';
             }
             $url = Session::currentPageUrl();
             if( ( $url != "$srv/?ctrl=security&action=loginForm" ) &&
-            ( $url != "$srv/?ctrl=security&action=login" ) &&
-            ( $url != "$srv/?ctrl=security&action=logout" ) &&
-            ( $url != "$srv/?ctrl=security&action=registerForm") &&
-            ( $url != "$srv/?ctrl=security&action=register") ) {
+                ( $url != "$srv/?ctrl=security&action=login" ) &&
+                ( $url != "$srv/?ctrl=security&action=logout" ) &&
+                ( $url != "$srv/?ctrl=security&action=registerForm") &&
+                ( $url != "$srv/?ctrl=security&action=register") ) 
+            {
                 $_SESSION['savedUrl'] = $url;
             }
         }
 
         /**
-        *   renvoie l'url sauvegardée en session, s'il y en a !
+        *   redirige vers l'url sauvegardée en session, s'il y en a ! (sinon, vers la home page)
         */
-        public static function restoreUrl(){
-            if(isset($_SESSION['savedUrl'])){
+        public static function restoreUrl()
+        {
+            if(isset($_SESSION['savedUrl']))
+            {
                 $savedUrl = $_SESSION['savedUrl'];
             }
             else $savedUrl = "./";
             header( "location: $savedUrl" );
+            die();
         }
 
         /**
@@ -121,7 +138,8 @@
         */
         public static function isAdmin()
         {
-            if(self::getUser() && self::getUser()->hasRole("ROLE_ADMIN")){
+            if(self::getUser() && self::getUser()->hasRole("ROLE_ADMIN"))
+            {
                 return true;
             }
             return false;
@@ -132,7 +150,8 @@
         */
         public static function isArtist()
         {
-            if(self::getUser() && self::getUser()->hasRole("ROLE_ARTIST")){
+            if(self::getUser() && self::getUser()->hasRole("ROLE_ARTIST"))
+            {
                 return true;
             }
             return false;

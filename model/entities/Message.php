@@ -8,7 +8,8 @@
     use Model\Managers\MessageManager;
 
     // final => la class Topic ne peut pas avoir d'enfants et elle hérite de laz classe Entity
-    final class Message extends Entity{
+    final class Message extends Entity
+    {
 
         // liste des propriétés de la classe Topic selons le principe d'encapsulation mes propriétés sont privées, 
         // c'est à dire qu'elles ne seront accessible que depuis la classe

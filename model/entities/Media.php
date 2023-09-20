@@ -6,7 +6,8 @@
     use App\Entity;
 
     // final => la class Topic ne peut pas avoir d'enfants et elle hérite de laz classe Entity
-    final class Media extends Entity{
+    final class Media extends Entity
+    {
 
         // liste des propriétés de la classe Topic selons le principe d'encapsulation mes propriétés sont privées, 
         // c'est à dire qu'elles ne seront accessible que depuis la classe
@@ -27,7 +28,8 @@
         /**
          * Constructeur
          */
-        public function __construct($data){         
+        public function __construct($data)
+        {
             $this->hydrate($data);        
         }
  
@@ -91,16 +93,22 @@
                 return $this;
         }
 
-        // Load the file givven by $mediaFile = $_FILE["fileName"]
-        // And return an array containing:
-        // "name" => "C:/images/exemple.jpg" (the name entered by the user)
-        // "url" => "./img/fhtke1250srt015.jpg" (the url on the server)
-        // "type" => "images/jpeg" (the type of the file)
-        public static function loadMediaFile( $mediaFile ){
+        /**
+         * Load the file givven by $mediaFile = $_FILE["fileName"]
+         * And return an array containing:
+         * "name" => "C:/images/exemple.jpg" (the name entered by the user)
+         * "url" => "./img/fhtke1250srt015.jpg" (the url on the server)
+         * "type" => "images/jpeg" (the type of the file)
+         */
+        public static function loadMediaFile( $mediaFile )
+        {
+                // définit un id unique
                 $uid = uniqid();
+                // définit les paramètres de retours par défaut
                 $retval['name'] = $mediaFile["name"];
                 $retval['url'] = "./img/undefinedImageUrl.jpg";
                 $retval['type'] = $mediaFile["type"];
+                // En fonction du type de fichier, définit l'url du fichier uploadé
                 switch( $retval['type'] ) {
                     case "image/jpeg":
                         $retval['url'] = "./img/".$uid.".jpeg";
@@ -136,14 +144,19 @@
                         $retval['url'] = "./pdf/".$uid.".pdf";
                         break;
                     default:
-                        $retval['url'] = "./img/undefinedImageUrl.jpg";
                         break;
                 }
+                // si un fichier a bien été défini, le copie à l'adresse de url
                 if( $retval['url'] != "./img/undefinedImageUrl.jpg" ) copy( $mediaFile["tmp_name"], $retval['url'] );
+                // Renvoie le tableau de résultat
                 return $retval;
         }
 
-        private function verifyMediaSize( $mediaSize ) {
+        /**
+         * Méthode pour vérifier la taille du média
+         */
+        private function verifyMediaSize( $mediaSize ) 
+        {
                 switch( $mediaSize ) {
                         case 'tiny':
                         case 'medium':
@@ -156,7 +169,10 @@
                 return $mediaSize;
         }
 
-        public function showPicture( $mediaSize = 'tiny' ) {
+        /**
+         * Méthode pour afficher l'image du média
+         */
+        private function showPicture( $mediaSize = 'tiny' ) {
                 $mediaSize = $this->verifyMediaSize( $mediaSize );
 ?>
                 <figure class="<?= 'figure-'.$mediaSize ?>">
@@ -166,7 +182,10 @@
 <?php
         }
 
-        public function playSound( $mediaSize = 'tiny' ) {
+        /**
+         * Méthode pour jouer le son du média
+         */
+        private function playSound( $mediaSize = 'tiny' ) {
                 $mediaSize = $this->verifyMediaSize( $mediaSize );
 ?>
                <audio controls>
@@ -176,7 +195,10 @@
 <?php
         }
 
-        public function playVideo( $mediaSize = 'tiny' ) {
+        /**
+         * Méthode pour afficher la vidéo du média
+         */
+        private function playVideo( $mediaSize = 'tiny' ) {
                 $mediaSize = $this->verifyMediaSize( $mediaSize );
 ?>
                <video controls class="<?= 'video-'.$mediaSize ?>">
@@ -186,7 +208,10 @@
 <?php
         }
 
-        public function showPdf( $mediaSize = 'tiny' ) {
+        /**
+         * Méthode pour afficher le PDF du média
+         */
+        private function showPdf( $mediaSize = 'tiny' ) {
                 $mediaSize = $this->verifyMediaSize( $mediaSize );
 ?>
                 <embed src="<?= $this->{$mediaSize.'MediaUrl'} ?>" class="<?= 'pdf-'.$mediaSize ?>" type="application/pdf">
@@ -194,29 +219,35 @@
         }
 
         /**
-         * Shox the media
-         */ 
+         * Méthode pour afficher le media
+         */
         public function showMedia( $mediaSize = 'tiny' )
         {
+                // Vérifie que la taille du média est référencée
                 $mediaSize = $this->verifyMediaSize( $mediaSize );
+                // En fonction du type de média de la taille choisie
                 switch( $this->{$mediaSize.'MediaType'} ) {
                         case "image/jpg":
                         case "image/jpeg":
                         case "image/png":
                         case "image/gif":
                         case "image/bmp":
+                                // Affiche l'image
                                 $this->showPicture( $mediaSize );
                                 break;
                         case "audio/mp3":
                         case "audio/ogg":
                         case "audio/mpeg":
+                                // joue le son
                                 $this->playSound( $mediaSize );
                                 break;
                         case "video/webm":
-                        case "video/mp4":   
+                        case "video/mp4":
+                                // Affiche la vidéo
                                 $this->playVideo( $mediaSize );
                                 break;
                         case "app/pdf":
+                                // Affiche le pdf
                                 $this->showPdf( $mediaSize );
                                 break;
                         default:

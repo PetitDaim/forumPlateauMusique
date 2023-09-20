@@ -1,4 +1,7 @@
 <?php
+    /**
+     * VUE DU FORMULAIRE DE LOGIN
+     */
     if( isset($result["data"]['user']) ) $user = $result["data"]['user'];
     require_once( BASE_DIR."view/utils/printErrorMessage.php" );
 ?>

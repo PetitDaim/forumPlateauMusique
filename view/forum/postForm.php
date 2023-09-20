@@ -13,14 +13,14 @@
             <label for="message">Message : </label>
             <textarea name="message" id="message"><?= isset($post)?$post->getMessage():"" ?></textarea>
 
-            <!-- Bouton d'envoi -->
+            <!-- Bouton d'envoi vers le post-->
             <button type="submit">Poster le message</button>
         </form>
 <?php
     if(isset( $topic ) && $topic->getId() ) {
 ?>
         <form action="./?ctrl=forum&action=topicDetail&id=<?= $topic->getId() ?>" method="post" class="card">
-            <!-- Bouton d'envoi -->
+            <!-- Bouton d'envoi vers le détail du topic-->
             <button type="submit">Voir le détail du sujet</button>
         </form>
 <?php

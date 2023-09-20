@@ -16,8 +16,8 @@
     use Model\Entities\Post;
     use Throwable;
 
-    class ForumController extends AbstractController implements ControllerInterface{
-
+    class ForumController extends AbstractController implements ControllerInterface
+    {
         /**
          * Méthode appelée par défaut lorsqu'aucune action n'est spécifiée
          * Renvoie la liste de tous les sujets postés
@@ -420,38 +420,40 @@
          */
         public function postForm( $id )
         {
+            // Vérifie qu'on est connecté
             if( ! Session::getUser() ) 
             {
+                // Sinon : Affiche une erreur et redirige vers la page de login
                 Session::addFlash( "error", "Il faut se connecter pour poster des messages." );
                 $this->redirectTo( "security", "loginForm" );
             }
+            // Vérifie qu'on n'est pas banni
             else if( Session::getUser()->getBanned() ) 
             {
+                // Sinon : Affiche une erreur et redirige vers la page de la liste des catégories
                 Session::addFlash( "error", "Vous avez été banni et ne pouvez plus poster de messages." );
                 $this->redirectTo( "forum", "categoriesList" );
             }
-            $topicManager = new TopicManager();
+            // Vérifie que le post correspond à un topic ($id)
             if( $id )
             {
                 try
                 {
+                    // Instancie le manager de topic
+                    $topicManager = new TopicManager();
+                    // Cherche le topic concerné
                     $topic = $topicManager->findOneById( $id );
+                    // Si il y a bien un topic et qu'il n'est pas clos
                     if( $topic && ( ! $topic->getClosed() ) ) 
                     {
-                        return [
-                            "view" => VIEW_DIR."forum/postForm.php",
-                            "data" => [
-                                "topic" => $topic,
-                                'title' => "Formulaire d'envoi d'une réponse à un sujet",
-                                'description' => "Formulaire d'envoi d'une réponse au sujet : ".$topic->getTitle()
-                            ]
-                        ];
+                        $this->redirectTo( "forum", "topicDetail", $id );
                     }
                 }
                 catch( Throwable $err )
                 {
                 }
             }
+            // Affiche un message d'erreur
             Session::addFlash( "error", "Impossible de poster un message sur un sujet clos." );
             $this->redirectTo( "forum", "index" );
         }
@@ -541,23 +543,27 @@
                             ]
                         );
                     }
+                    // Redirige vers le détail du topic
                     $this->redirectTo( "forum", "topicDetail", $id );
                 }
                 catch( \Exception $err )
                 {
+                    // Affiche un message d'erreur et Redirige vers la liste des topics
                     Session::addFlash( "Error", "Ce sujet n'existe pas !" );
                     $this->redirectTo( "forum", "topicsList", 0 );
                 }
             }
             else if( $userId ) 
             {
+                // Affiche un message d'erreur et Redirige vers la liste des topics
                 Session::addFlash( "Error", "Ce sujet n'existe pas !" );
                 $this->redirectTo( "forum", "topicsList", 0 );
             }
             else 
             {
+                // Affiche un message d'erreur et Redirige vers la page de login
                 Session::addFlash( "Error", "Vous devez être connecté pour pouvoir liker un sujet !" );
-                return (new SecurityController())->loginForm();
+                $this->redirectTo( "security", "loginForm" );
             }
         }
 
@@ -604,21 +610,21 @@
                 }
                 catch( \Exception $err )
                 {
+                    // Affiche un message d'erreur et Redirige vers la liste des 10 derniers topics
                     Session::addFlash( "Error", "Ce post n'existe pas !" );
-                    // Redirige vers la liste des 10 derniers topics
                     $this->redirectTo( "forum", "topicsList" );
                 }
             }
             else if( $userId ) 
             {
+                // Affiche un message d'erreur et Redirige vers la liste des 10 derniers topics
                 Session::addFlash( "Error", "Ce post n'existe pas !" );
-                // Redirige vers la liste des 10 derniers topics
                 $this->redirectTo( "forum", "topicsList" );
             }
             else 
             {
+                // Affiche un message d'erreur et Redirige vers la page de login
                 Session::addFlash( "Error", "Vous devez être connecté pour pouvoir liker un message !" );
-                // Redirige vers la page de login
                 $this->redirectTo( "security", "loginForm" );
             }
         }

@@ -1,4 +1,7 @@
 <?php
+    /**
+     * VUE DU FORMULAIRE D'ENREGISTREMENT
+     */
     if( isset($result["data"]['user']) ) $user = $result["data"]['user'];
     if( isset($result["data"]['password']) ) $password = $result["data"]['password'];
     if( isset($result["data"]['passwordConfirm']) ) $passwordConfirm = $result["data"]['passwordConfirm'];

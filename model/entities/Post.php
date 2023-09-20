@@ -13,8 +13,8 @@
 
         // liste des propriétés de la classe Topic selons le principe d'encapsulation mes propriétés sont privées, 
         // c'est à dire qu'elles ne seront accessible que depuis la classe
-       // ou bien par des setters getters
-       private $id;
+        // ou bien par des setters getters
+        private $id;
         private $user;
         private $topic;
         private $message;
@@ -173,20 +173,25 @@
         }
 
         /**
-         * Fonction qui renvoie les likers
+         * Fonction qui renvoie les likers (sous forme de string pour l'affichage direct)
          */
         public function getLikers() 
         {
+                // Initialise la chaine de retour
                 $retval = "";
+                // Récupère tous les likes du post
                 $postLikes = $this->getPostLikes();
+                // S'il y en a
                 if( $postLikes ) {
                         $count = 0;
                         foreach( $postLikes as $postLike )
                         {
-                                $retval .= ($count?"\r\n":"").$postLike->getUser()->getPseudo();
+                                // Ajoute le pseudo du liker (précédé d'un retour à la ligne si ce n'est pas le premier) à la chaine de retour
+                                $retval .= ( $count ? "\r\n" : "" ).$postLike->getUser()->getPseudo();
                                 $count++;
                         }
                 }
+                // Renvoie la chaine de retour
                 return $retval;
         }
 

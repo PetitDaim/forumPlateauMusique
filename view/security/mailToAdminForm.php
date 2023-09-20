@@ -1,4 +1,7 @@
 <?php
+    /**
+     * VUE DU FORMULAIRE DE MAIL A L'ADMIN
+     */
     if( isset($result["data"]['object']) ) $object = $result["data"]['object'];
     if( isset($result["data"]['message']) ) $message = $result["data"]['message'];
     require_once( BASE_DIR."view/utils/printErrorMessage.php" );

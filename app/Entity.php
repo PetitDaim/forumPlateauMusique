@@ -1,10 +1,15 @@
 <?php
     namespace App;
 
-    abstract class Entity{
+    abstract class Entity
+    {
 
-        protected function hydrate($data){
-
+        /**
+         * Méthode qui permet d'hydrater la classe à partir de la BDD
+         */
+        protected function hydrate($data)
+        {
+            // vérifie qu'il y a bien des datas à hydrater
             if( $data ) {
                 foreach($data as $field => $value){
 
@@ -31,7 +36,12 @@
             }
         }
 
-        public function getClass(){
+        /**
+         * Méthode qui renvoie la Classe du $this
+         */
+        public function getClass()
+        {
             return get_class($this);
         }
+
     }

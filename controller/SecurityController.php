@@ -15,31 +15,34 @@
     use Model\Managers\MessageManager;
     use Throwable;
 
-    class SecurityController extends AbstractController implements ControllerInterface{
+    class SecurityController extends AbstractController implements ControllerInterface
+    {
 
         /**
          * Méthode appelée par défaut : Renvoie la liste des catégories
          */
-        public function index(){
-    
+        public function index()
+        {
+            // Instancie le manager de catégorie et renvoie la liste des catégories par ordre alphabétique
             $categoryManager = new CategoryManager();
-            // Définition de la description de la page.
-            $description = "Ce forum de musique présente diverses catégorie de publications de sujets permettant à des artistes qui souhapitent émerger, de faire connaître leurs créations musicales";
-            // Définition du titre de la page.
-            $title = "Accueil du forum de musique";
+            $categories = $categoryManager->findAll(["categoryName", "ASC"]);
+            // Redirige vers la home page
             return [
-                "view" => VIEW_DIR."home/index.php",
+                "view" => VIEW_DIR."home/home.php",
                 "data" => [
-                    "categories" => $categoryManager->findAll(["categoryName", "ASC"]),
-                    'title' => $title,
-                    'description' => $description
+                    "categories" => $categories,
+                    'title' => "Accueil du forum de musique",
+                    'description' => "Ce forum de musique présente diverses catégorie de publications de sujets permettant à des artistes qui souhapitent émerger, de faire connaître leurs créations musicales"
                 ]
             ];
  
         }
 
-        public function registerForm(){
-    
+        /**
+         * Méthode qui prépare la page d'enregistrement d'utilisateur
+         */
+        public function registerForm()
+        {
             return [
                 "view" => VIEW_DIR."security/registerForm.php",
                 "data" => [
@@ -55,54 +58,67 @@
          */
         public function register()
         {
+            // Récupère les données du formulaire en se prémunissant de la faille xss
             $pseudo = filter_input( INPUT_POST, "pseudo", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $password = filter_input( INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $passwordConfirm = filter_input( INPUT_POST, "passwordConfirm", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             $email = filter_input( INPUT_POST, "email", FILTER_SANITIZE_EMAIL );
-            
+            // Initialise la variable définissant s'il y a des erreurs ou non dans le formulaire.
             $hasErrors = false;
-            if( strlen( $pseudo ) < 3 ) {
+            // Si le pseudo a une longuer inférieure à 3 : Affiche une erreur
+            if( strlen( $pseudo ) < 3 ) 
+            {
                 Session::addErrors('pseudo', "Le pseudo doit contenir au moin 3 caractères");
                 $hasErrors = true;
             }
 
-            if( strlen( $password ) < 12 ) {
+            // Si le mot de passe a une longuer inférieure à 12 : Affiche une erreur
+            if( strlen( $password ) < 12 ) 
+            {
                 Session::addErrors('password', "Le mot de passe doit contenir au moins 12 caractères");
                 $hasErrors = true;
             }
-            else if( ! preg_match( "/^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_=?*+#.\"&§%°()\|\[\]\-\$\^\@\/]{12,128}$/", $password ) ) {
+            // Si le mot de passe ne correspond pas aux standards de sécurilté : Affiche une erreur
+            else if( ! preg_match( '/^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_=?*+#."&§%°()\|\[\]\-\$\^\@\/]{12,128}$/', $password ) ) 
+            {
                 Session::addErrors('password', "Le mot de passe doit contenir au moins deux minuscules, deux Majuscules, deux chiffres, deux caractères spéciaux et aucuns caractèrs en double" );
                 $hasErrors = true;
             }
-            else if( $passwordConfirm != $password ) {
+            // Si les deux mots de passe ne correspondent pas : Affiche une erreur
+            else if( $passwordConfirm != $password ) 
+            {
                 Session::addErrors('password', "Les deux mots de passes sont différents");
                 $hasErrors = true;
             }
-            if( strlen( $email ) < 8 ) {
+            // Si l'EMail' a une longuer inférieure à 8 : Affiche une erreur
+            if( strlen( $email ) < 8 ) 
+            {
                 Session::addErrors('email', "L'EMail' doit contenir au moins 8 caractères");
                 $hasErrors = true;
             }
 
-            if( $hasErrors ) {
-                Session::addFlash('error', "Erreur de formulaire: Merci de vérifier les messages qui suivent");
-
-                $user = new User(false);
-                $user->setPseudo($pseudo);
-                $user->setEmail($email);
-            }
-            else {
+            // Si il y a des erreurs dans les données du formulaire, Affiche une erreur flash
+            if( ! $hasErrors ) 
+            {
                 $userManager = new UserManager();
-                try{
-                    if( $userManager->findWherePseudo( $pseudo ) ) {
+                try
+                {
+                    // Si ce pseudo est déja utilisé : Affiche une erreur
+                    if( $userManager->findWherePseudo( $pseudo ) ) 
+                    {
                         $hasErrors = true;
                         Session::addErrors('pseudo', "Ce pseudo est déjà utilisé");
                     }
-                    if ( $userManager->findWhereEmail( $email ) ) {
+                    // Si cet email est déja utilisé : Affiche une erreur
+                    if ( $userManager->findWhereEmail( $email ) ) 
+                    {
                         $hasErrors = true;
                         Session::addErrors('email', "Cet email est déjà utilisé");
                     }
-                    if( ! $hasErrors ) {
-            
+                    // S'il n'y a toujours pas d'erreur
+                    if( ! $hasErrors ) 
+                    {
+                        // Ajoute le user en BDD en hashant le mot de passe
                         $userId = $userManager->add(
                             [
                                 "pseudo" => $pseudo, 
@@ -111,30 +127,26 @@
                                 "role" => json_encode( [ "ROLE_USER" ] )
                             ]
                         );
-            
-                        $user = $userManager->findOneById( $userId );
-                            
+                        // Affiche un message de succes et redirige sur la page de login
+                        Session::addFlash('success', "Votre utilisateur a bien été inscrit");
+                        $this->redirectTo( "security", "loginForm" );
                     }
                         
                 }
-                catch( Throwable $_err ) {
+                catch( Throwable $_err ) 
+                {
                     $hasErrors = true;
                     echo $_err->getMessage();
                     Session::addErrors('email', "Ce pseudo ou cet email sont déjà utilisés");
                 }
-    
-                if( $hasErrors ) {
-                    Session::addFlash('error', "Erreur de formulaire: Merci de vérifier les messages qui suivent");
-                    $user = new User(false);
-                    $user->setPseudo($pseudo);
-                    $user->setPassword($password);
-                    $user->setEmail($email);
-                }
-                else {
-                    Session::addFlash('success', "Votre utilisateur a bien été inscrit");
-                    return $this->loginForm();
-                }
             }
+            // Affiche un message d'erreur
+            Session::addFlash('error', "Erreur de formulaire: Merci de vérifier les messages qui suivent");
+            // Instancie un user et l'initialise avec les données du formulaire
+            $user = new User(false);
+            $user->setPseudo($pseudo);
+            $user->setEmail($email);
+            // renvoie vers le formulaire
             return [
                 "view" => VIEW_DIR."security/registerForm.php",
                 "data" => [
@@ -151,8 +163,9 @@
         /**
          * Méthode de presentation du formulaire de connection
          */
-        public function loginForm(){
-    
+        public function loginForm()
+        {
+            // Renvoie vers le formulaire de login
             return [
                 "view" => VIEW_DIR."security/loginForm.php",
                 "data" => [
@@ -177,53 +190,60 @@
             // Instancie le manager de l'utilisateur
             $userManager = new UserManager();
             // Vérifie si il y a un user avec ce pseudo et cet email
-            if( $user = $userManager->findWherePseudoAndEmail( $pseudo, $email ) ) {
-                if( password_verify( $password, $user->getPassword() ) ) {
+            if( $user = $userManager->findWherePseudoAndEmail( $pseudo, $email ) ) 
+            {
+                // Vérifie si le mot de passe correspond
+                if( password_verify( $password, $user->getPassword() ) ) 
+                {
+                    // Connecte l'utilisateur
                     Session::setUser( $user );
-                    if( $user->getBanned() ) {
+                    // Si l'utilisateur a été banni
+                    if( $user->getBanned() ) 
+                    {
+                        // Affiche un message d'erreur
                         Session::addFlash( 'error', "Vous avez été banni, Veuilez contacter un administrateur." );
+                        // Redirige vers la page de détail de l'utilisateur
+                        $this->redirectTo( "security", "userDetail", $user->getId() );
                     }
-                    else{
-                        Session::addFlash( 'success', "Vous êtes bien connecté." );
-                    }
+                    // Affiche un message de succes
+                    Session::addFlash( 'success', "Vous êtes bien connecté." );
+                    // Redirige sur l'URL sauvegardée en session (différente des pages de login et de registration)
                     Session::restoreUrl();
-                    return;
                 }
-                else{
-                    $hasErrors = true;
-                    Session::addErrors('password', "Le mot de passe ne correspond pas !");
-                }
+                // Affiche un message d'erreur
+                Session::addErrors('password', "Le mot de passe ne correspond pas !");
             }
-            else{
+            else
+            {
                 // Sinon : Le pseudo et le mail ne correspondent pas, on part en erreur
                 $hasErrors = true;
                 Session::addErrors('pseudo', "Le pseudo ou le mail ne correspondent pas !");
             }
             // Si il n'a toujours pas été possible de se connecter
-            if( $hasErrors ){
-                // Crée un user sans hydratation pour l'affichage des données entrées
-                $user = new User( false );
-                $user->setPseudo( $pseudo );
-                $user->setEmail( $email );
-                Session::addFlash( 'error', "l'autentification a échoué" );
-                // Renvoie la vue du formulaire de login
-                // ainsi que le paramètre user
-                return [
-                    "view" => VIEW_DIR."security/loginForm.php",
-                    "data" => [
-                        "user" => $user,
-                        'title' => "Formulaire de connection",
-                        'description' => "Le Formulaire de connection contient un pseudo, un email et un mot de passe sécurisé (⩾ 12 caractères AlphaNumériques avec caractères spéciaux) à renseigner..."
-                    ]
-                ];
-            }
+            // Crée un user sans hydratation pour l'affichage des données entrées dans le formulaire
+            $user = new User( false );
+            $user->setPseudo( $pseudo );
+            $user->setPassword( $password );
+            $user->setEmail( $email );
+            Session::addFlash( 'error', "l'autentification a échoué" );
+            // Renvoie la vue du formulaire de login
+            // ainsi que le paramètre user
+            return [
+                "view" => VIEW_DIR."security/loginForm.php",
+                "data" => [
+                    "user" => $user,
+                    'title' => "Formulaire de connection",
+                    'description' => "Le Formulaire de connection contient un pseudo, un email et un mot de passe sécurisé (⩾ 12 caractères AlphaNumériques avec caractères spéciaux) à renseigner..."
+                ]
+            ];
         }
 
         /**
-         * 
+         * Méthode de logout
          */
         public function logout( $id )
         {
+            // Annule la session
             Session::setUser( null );
             unset( $_SESSION );
             // Redirige vers la page d'accueil du forum
@@ -236,29 +256,32 @@
          */
         public function usersList( $id=null )
         {
-            if( Session::isAdmin() ) {
+            if( Session::isAdmin() ) 
+            {
                 // Intancie le manager des utilisateurs
                 $manager = new UserManager();
-                // Définit le titre de la page
-                $title = "Liste des utilisateurs du forum de musique";
-                // definit la description de la page
-                $description = "Présentation d'artistes qui souhapitent émerger et faire connaître leurs créations musicales, plus d'utilisateurs du forum souhaitant encourager ces artistes";
-                // définit le fait que la page ne doit pas être indexée par les moteurs de recherche
-                $noIndex = true;
                 // Récupère la liste de tous les utilisateurs triées par ordre alphabétique du pseudo
                 $users = $manager->findAll( ["pseudo", "ASC"] );
+                // Redirige vers la liste des utilisateurs
                 return [
                         "view" => VIEW_DIR."security/usersList.php",
-                        "data"=> ["users" => $users]
+                        "data"=> [
+                            "users" => $users,
+                            "title" => "Liste des utilisateurs du forum de musique",
+                            "description" => "Présentation d'artistes qui souhapitent émerger et faire connaître leurs créations musicales, plus d'utilisateurs du forum souhaitant encourager ces artistes",
+                            "noIndex" => true
+                        ]
                 ];
             }
-            else return $this->index();
+            // Redirige vers la home page
+            $this->redirectTo( "security", "index" );
         }
 
         /**
          * Méthode pour préparer le détail d'un utilisateur
          */
-        public function userDetail( $id ){
+        public function userDetail( $id )
+        {
             // Instancie le manager de l'utilisateur
             $userManager = new UserManager();
             // Récupère l'utilisateur dont on vient de récupérer l'id
@@ -293,9 +316,8 @@
             ];
         }
 
-        public function userBannUnbann( $id ){
-            $isSuccess = false;
-
+        public function userBannUnbann( $id )
+        {
             $userManager = new UserManager();
             // Récupère l'utilisateur
             $user = $userManager->findOneById( $id );
@@ -303,29 +325,34 @@
             // Initialisation d'une variable pour le messaged'erreur
             $de = "";
             // Vérifie que l'utilisateur connecté est bien l'administrateur du forum
-            if( Session::isAdmin() && ( ! ((isset($user)&&$user)&&($user==Session::getUser())) ) ) {
-                if( $user->getBanned() ) {
+            if( Session::isAdmin() && ( ! ( ( isset( $user ) && $user) && ( $user == Session::getUser() ) ) ) ) 
+            {
+                // Si l'utilisateur était banni
+                if( $user->getBanned() ) 
+                {
+                    // Débanni l'utilisateur
                     $user->setBanned( 0 );
                     // Modification d'une variable pour le messaged'erreur
                     $de = "dé";
                 }
+                // Sinon, Banni l'utilisateur
                 else $user->setBanned( 1 );
-                try{
+                try
+                {
+                    // Update en BDD
                     $userManager->update( $user );
-                    $isSuccess = true;
+                    // Redirige vers la page de détail de l'utilisateur (pour pouvoir revenir en arrière si on pense avoir fait une fausse manip)
+                    $this->redirectTo( "security", "userDetail", $user->getId() );
                 }
                 catch( Throwable $err )
                 {
-                    echo $err->getMessage();
+                    // echo $err->getMessage();
                 }
             }
-            if( $isSuccess ) {
-                return $this->userDetail( $user->getId() );
-            }
-            else {
-                Session::addFlash( 'error', "Impossible de ".$de."bannir le posteur du message !!!" );
-                return $this->index();
-            }
+            // Affiche un message d'erreur
+            Session::addFlash( 'error', "Impossible de ".$de."bannir le posteur du message !!!" );
+            // Redirige vers la home page
+            $this->redirectTo( "security", "index" );
         }
 
         /**
@@ -333,40 +360,67 @@
          */
         public function mailToAdmin() 
         {
-            $mailSend = false;
-            if( ! Session::getUser() ) {
+            $hasErrors = false;
+            //  Vérifie que l'utilisateur est bien connecté
+            if( ! Session::getUser() ) 
+            {
+                // Sinon : Affiche un message d'erreur
                 Session::addFlash( 'error', "Il faut être connecté pour envoyer un message à l'administrateur du forum !" );
-                return $this->loginForm();
+                // Redirige vers la page de login
+                $this->redirectTo( "security", "loginForm" );
             }
+            // Récupère les données du formulaire en se prémunissant de la faille xss
             $object = filter_input( INPUT_POST, "object", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+            $message = filter_input( INPUT_POST, "message", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+            // Si la longueur de l'objet est inférieure à 5 : Affiche un message d'erreur
             $objectLength = strlen( $object );
-            if( $objectLength < 5 ) {
+            if( $objectLength < 5 ) 
+            {
+                $hasErrors = true;
                 Session::addErrors('object', "L'objet du message doit comporter au moins 5 caractères");
             }
-            else if( $objectLength > 30 ) {
+            // Si la longueur de l'objet est supérieure à 30 : Affiche un message d'erreur
+            else if( $objectLength > 30 ) 
+            {
+                $hasErrors = true;
                 Session::addErrors('object', "L'objet du message doit comporter au maximum 30 caractères");
             }
-            $message = filter_input( INPUT_POST, "message", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+            // Si la longueur du message est inférieure à 10 : Affiche un message d'erreur
             $messageLength = strlen( $message );
-            if( $messageLength < 10 ) {
+            if( $messageLength < 10 ) 
+            {
+                $hasErrors = true;
                 Session::addErrors('message', "Le message doit comporter au moins 10 caractères (vous pouvez commencer par Bonjour,...)");
             }
-            else if( $messageLength > 255 ) {
+            // Si la longueur du message est supérieure à 30 : Affiche un message d'erreur
+            else if( $messageLength > 255 ) 
+            {
+                $hasErrors = true;
                 Session::addErrors('message', "Le message doit comporter au maximum 255 caractères");
             }
-            else {
+            if( ! $hasErrors ) 
+            {
+                // Instancie le manager de message
                 $messageManager = new MessageManager();
+                // Ajoute le message en BDD
                 $messageManager->add([
                     'object' => $object,
                     'message' => $message
                 ]);
-                $mailSend = true;
+                // Affiche un message de succes
                 Session::addFlash( 'success', "Le message a bien été envoyé." );
-                return $this->index();
+                // Redirige vers la home page
+                $this->redirectTo( "security", "index" );
             }
+            // Revoie vers le formulaire de mail
             return [
                 "view" => VIEW_DIR."security/mailToAdminForm.php",
-                "data" => [ "object" => $object, "message" => $message ]
+                "data" => [ 
+                    "object" => $object, 
+                    "message" => $message,
+                    "title" => "Envoyer un message à l'administrateur du forum",
+                    "description" => "Envoyer un message à l'administrateur du forum de Musique"
+                ]
             ];
         }
 
@@ -377,14 +431,22 @@
         {
             return [
                 "view" => VIEW_DIR."security/mailToAdminForm.php",
-                "data" => [ "message" => "" ]
+                "data" => [ 
+                    "message" => "",
+                    "title" => "Envoyer un message à l'administrateur du forum",
+                    "description" => "Envoyer un message à l'administrateur du forum de Musique"
+                ]
             ];
         }
 
         public function forumRules(){
             
             return [
-                "view" => VIEW_DIR."rules.php"
+                "view" => VIEW_DIR."rules.php",
+                "data" => [ 
+                    "title" => "Règles du forum",
+                    "description" => "Règles du forum de Musique"
+                ]
             ];
         }
 
@@ -393,11 +455,25 @@
          */
         public function messagesList() 
         {
+            // Vérifie qu'on est bien administrateur
+            if( ! Session::isAdmin() ) 
+            {                
+                Session::addFlash( 'error', "Vous n'avez pas le droit de voir les messages de l'administrateur du forum !" );
+                $this->redirectTo( "security", "index" );
+            }
+            // Intancie le manager de message
             $messageManager = new MessageManager();
+            // Récupère tous les messages
             $messages = $messageManager->findAll();
+            // Renvoie la vue liste des messages
             return [
                 "view" => VIEW_DIR."security/messagesList.php",
-                "data" => [ 'messages' => $messages ]
+                "data" => [ 
+                    'messages' => $messages,
+                    "title" => "Liste des messages de l'administrateur du forum",
+                    "description" => "Envoyer un message à l'administrateur du forum de Musique",
+                    "noIndex" => true
+                ]
             ];
         }
 
@@ -406,11 +482,25 @@
          */
         public function messageDetail( $id ) 
         {
+            // Vérifie qu'on est bien administrateur
+            if( ! Session::isAdmin() ) 
+            {                
+                Session::addFlash( 'error', "Vous n'avez pas le droit de voir les messages de l'administrateur du forum !" );
+                $this->redirectTo( "security", "index" );
+            }
+            // Intancie le manager de message
             $messageManager = new MessageManager();
+            // Récupère le message sélectionné par $id
             $message = $messageManager->findOneById( $id );
+            // Renvoie la vue Détail de message
             return [
                 "view" => VIEW_DIR."security/messageDetail.php",
-                "data" => [ 'message' => $message ]
+                "data" => [ 
+                    'message' => $message,
+                    "title" => "Détail d'un message de l'administrateur du forum",
+                    "description" => "Détail d'un message de l'administrateur du forum de Musique",
+                    "noIndex" => true
+                ]
             ];
         }
 
@@ -419,9 +509,18 @@
          */
         public function messageDelete( $id )
         {
+            // Vérifie qu'on est bien administrateur
+            if( ! Session::isAdmin() ) 
+            {                
+                Session::addFlash( 'error', "Vous n'avez pas le droit de voir les messages de l'administrateur du forum !" );
+                $this->redirectTo( "security", "index" );
+            }
+            // Intancie le manager de message
             $messageManager = new MessageManager();
+            // Supprime le message sélectionné par $id
             $messageManager->delete( $id );
-            return $this->messagesList();
+            // Redirige vers la liste des messages
+            $this->redirectTo( "security", "messagesList" );
         }
 
         /*public function ajax(){

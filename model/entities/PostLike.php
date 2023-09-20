@@ -7,7 +7,8 @@
     use Model\Managers\PostLikeManager;
 
     // final => la class PostLike ne peut pas avoir d'enfants et elle hérite de laz classe Entity
-    final class PostLike extends Entity{
+    final class PostLike extends Entity
+    {
 
         // liste des propriétés de la classe PostLike selons le principe d'encapsulation mes propriétés sont privées, 
         // c'est à dire qu'elles ne seront accessible que depuis la classe
@@ -17,7 +18,11 @@
         private $user;
         private $likeDate;
 
-        public function __construct($data){         
+        /**
+         * Constructeur
+         */
+        public function __construct($data)
+        {
             $this->hydrate($data);        
         }
 

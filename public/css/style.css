@@ -243,10 +243,12 @@ figcaption{
     margin: auto;
 }
 
-.message1{
+.message-erreur{
     margin: 15px;
     padding: 15px;
     border-radius: 15px;
+    background-color: #f00;
+    color:var(--color-gold);
 }
 
 .width-500{

@@ -8,7 +8,8 @@
     use Model\Managers\TopicLikeManager;
 
     // final => la class TopicLike ne peut pas avoir d'enfants et elle hérite de laz classe Entity
-    final class TopicLike extends Entity{
+    final class TopicLike extends Entity
+    {
 
         // liste des propriétés de la classe TopicLike selons le principe d'encapsulation mes propriétés sont privées, 
         // c'est à dire qu'elles ne seront accessible que depuis la classe

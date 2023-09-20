@@ -4,13 +4,18 @@
     use App\Manager;
     use App\DAO;
 
-    class MessageManager extends Manager{
+    class MessageManager extends Manager
+    {
 
         protected $className = "Model\Entities\Message";
         protected $tableName = "message";
 
 
-        public function __construct(){
+        /**
+         * Constructeur
+         */
+        public function __construct()
+        {
             parent::connect();
         }
 

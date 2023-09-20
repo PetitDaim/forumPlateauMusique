@@ -19,7 +19,11 @@
         private $categoryNameSingulier;
         private $presentation;
 
-        public function __construct($data){         
+        /**
+         * Constructeur
+         */
+        public function __construct($data)
+        {         
             $this->hydrate($data);        
         }
  

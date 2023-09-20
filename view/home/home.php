@@ -1,4 +1,7 @@
 <?php
+    /**
+     * VUE DE LA PAGE D'ACCUEIL
+     */
     if( isset( $result["data"]['categories'] ) ) $categories = $result["data"]['categories'];
 ?>
 
@@ -57,8 +60,11 @@
 <?php
         }
     }
-    if( App\Session::isAdmin() ) {
+    // Si on est administrateur
+    if( App\Session::isAdmin() ) 
+    {
 ?>
+    <!-- BOUTON pour ajouter une catégorie -->
     <form class="card width-500" action="./?ctrl=forum&action=categoryAddForm" method="POST">
         <button type="submit">Ajouter une catégorie</button>
     </form>

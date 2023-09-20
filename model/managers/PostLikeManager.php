@@ -4,12 +4,16 @@
     use App\Manager;
     use App\DAO;
 
-    class PostLikeManager extends Manager{
+    class PostLikeManager extends Manager
+    {
 
         protected $className = "Model\Entities\PostLike";
         protected $tableName = "postlike";
 
 
+        /**
+         * Constructeur
+         */
         public function __construct()
         {
             parent::connect();

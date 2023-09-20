@@ -1,4 +1,7 @@
 <?php
+    /**
+     * VUE DU DÉTAIL DE MAIL A L'ADMIN
+     */
     if( isset( $result["data"]['message'] ) ) $message = $result["data"]['message'];
 ?>
 
@@ -6,8 +9,12 @@
 <div class="flex-row">
 
 <?php
-    if( App\Session::isAdmin() ) {
-        if( isset($message) ) {
+    // Si on est administrateur
+    if( App\Session::isAdmin() ) 
+    {
+        // Si il y a bien un message à afficher
+        if( isset($message) ) 
+        {
 ?>
     <div class="card width-600">
         <h3>

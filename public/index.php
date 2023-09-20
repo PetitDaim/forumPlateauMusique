@@ -57,6 +57,7 @@
     
     switch($action)
     {
+        // On commence par les fonctions appelées par ajax
         case "ajax":
         case "search":
             echo $result;//on affiche directement le return du contrôleur (càd la réponse HTTP sera uniquement celle-ci)

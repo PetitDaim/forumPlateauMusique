@@ -4,13 +4,18 @@
     use App\Manager;
     use App\DAO;
 
-    class TopicManager extends Manager{
+    class TopicManager extends Manager
+    {
 
         protected $className = "Model\Entities\Topic";
         protected $tableName = "topic";
 
 
-        public function __construct(){
+        /**
+         * Constructeur
+         */
+        public function __construct()
+        {
             parent::connect();
         }
 
@@ -77,7 +82,11 @@
             return intval( $this->getSingleScalarResult( DAO::select($sql, [':id' => $id], false ) ) );
         }
 
-        public function update( $topic ) {
+        /**
+         * Méthode pour updaterle topic
+         */
+        public function update( $topic ) 
+        {
             return $this->updateWhereId(
                 [
                     "title" => $topic->getTitle(),
@@ -90,17 +99,21 @@
             );
         }
         
-        public function findAllWhereUser( $id, $order = null){
-
+        /**
+         * Méthode pour renvoyer tous les topics créés par l'utilisateur
+         */
+        public function findAllWhereUser( $id, $order = null)
+        {
+            // Prépare le ORDER BY
             $orderQuery = ($order) ?                 
                 "ORDER BY ".$order[0]. " ".$order[1] :
                 "";
-
+            // Prépare la requete sql en se prémunissant de l'injection SQL
             $sql = "SELECT *
                     FROM ".$this->tableName." a
                     WHERE a.user_id = :id
                     ".$orderQuery;
-
+            // Renvoie la liste des topic créés par l'utilisateur
             return $this->getMultipleResults(
                 DAO::select($sql, [':id' => $id]), 
                 $this->className

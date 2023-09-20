@@ -12,18 +12,18 @@
      */
     abstract class DAO{
 
-        private static $host   = 'mysql:host=127.0.0.1;port=3306';
-        private static $dbname = 'forum_dv';
-        private static $dbuser = 'root';
-        private static $dbpass = '';
+        private static string $host   = 'mysql:host=127.0.0.1;port=3306';
+        private static string $dbname = 'forum_dv';
+        private static string $dbuser = 'root';
+        private static string $dbpass = '';
 
-        private static $bdd;
+        private static \PDO $bdd;
 
         /**
          * cette méthode permet de créer l'unique instance de PDO de l'application
          */
-        public static function connect(){
-            
+        public static function connect() : void
+        {
             self::$bdd = new \PDO(
                 self::$host.';dbname='.self::$dbname,
                 self::$dbuser,
@@ -36,7 +36,10 @@
             );
         }
 
-        public static function insert($sql, $params){
+        /**
+         * cette méthode permet de faire une insertion en BDD
+         */
+        public static function insert( string $sql, array $params){
             try{
                 $stmt = self::$bdd->prepare($sql);
                 $stmt->execute($params);
@@ -51,7 +54,10 @@
             }
         }
 
-        public static function update($sql, $params){
+        /**
+         * cette méthode permet de faire un update en BDD
+         */
+        public static function update( string $sql, array $params){
             try{
                 $stmt = self::$bdd->prepare($sql);
                 
@@ -66,7 +72,11 @@
             }
         }
         
-        public static function delete($sql, $params){
+        /**
+         * cette méthode permet de faire un delete dans la BDD
+         */
+        public static function delete( string $sql, array $params )
+        {
             try{
                 $stmt = self::$bdd->prepare($sql);
                 

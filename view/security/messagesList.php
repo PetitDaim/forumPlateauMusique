@@ -1,4 +1,7 @@
 <?php
+     /**
+     * VUE DE LA LISTE DES MAILS A L'ADMIN
+     */
     if( isset( $result["data"]['messages'] ) ) $messages = $result["data"]['messages'];
 ?>
 
@@ -6,9 +9,15 @@
 <div class="flex-row">
 
 <?php
-    if( App\Session::isAdmin() ) {
-        if( isset($messages) ) {
-            foreach($messages as $message ){
+    // Si on est admin
+    if( App\Session::isAdmin() ) 
+    {
+        // Si il y a bien des messages
+        if( isset($messages) ) 
+        {
+            // On boucle sur les messages
+            foreach($messages as $message )
+            {
 ?>
     <div class="card width-500">
         <h3>

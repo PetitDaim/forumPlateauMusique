@@ -13,6 +13,7 @@
         <h3>
             <?= $category->getCategoryName() ?>
         </h3>
+        <!-- BOUTON pour voir le détail de la catégorie -->
         <form action="./?ctrl=forum&action=categoryDetail&id=<?= $category->getId() ?>" method="POST">
             <button type="submit">
                 Voir la liste des sujets
@@ -21,12 +22,14 @@
                 </small>
             </button>
         </form>
+        <!-- BOUTON pour ajouter un sujet à la catégorie -->
         <form action="./?ctrl=forum&action=topicAddForm&id=<?= $category->getId() ?>" method="POST">
             <button type="submit">Ajouter <?= $category->getCategoryNameSingulier() ?></button>
         </form>
 <?php
             if( App\Session::isAdmin() ) {
 ?>
+        <!-- BOUTON pour supprimer la catégorie -->
         <form action="./?ctrl=forum&action=categoryDelete&id=<?= $category->getId() ?>" method="POST">
             <button type="submit" class="error">Supprimer la catégorie</button>
         </form>
@@ -39,6 +42,7 @@
     }
     if( App\Session::isAdmin() ) {
 ?>
+    <!-- BOUTON pour ajouter une catégorie -->
     <form class="card width-500" action="./?ctrl=forum&action=categoryAddForm" method="POST">
         <button type="submit">Ajouter une catégorie</button>
     </form>

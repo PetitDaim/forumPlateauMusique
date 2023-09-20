@@ -10,7 +10,8 @@
     use Model\Managers\CategoryManager;
     use Model\Managers\PostManager;
     
-    class HomeController extends AbstractController implements ControllerInterface{
+    class HomeController extends AbstractController implements ControllerInterface
+    {
 
         /**
          * Méthode qui renvoie la liste des catégories triées par nom de catégorie croissant
@@ -28,7 +29,9 @@
                 "view" => VIEW_DIR."home/home.php",
                 "data" => [
                     // Passe la liste des catégories triées par nom de catégorie croissant
-                    "categories" => $categoryManager->findAll(["categoryName", "ASC"])
+                    "categories" => $categoryManager->findAll(["categoryName", "ASC"]),
+                    "title" => "Liste des catégories",
+                    'description' => "Liste des catégories (par ordre alphabétique)"
                 ]
             ];
  
@@ -39,12 +42,12 @@
          */
         public function forumRules()
         {
-            // Définit le titre de la page
-            $title = "Règles du forum de musique";
-            // definit la description de la page
-            $description = "Ce forum de musique possède des règles d'utilisation qu'il convient de respecter sous peine d'être banni du forum";
             return [
-                "view" => VIEW_DIR."home/rules.php"
+                "view" => VIEW_DIR."home/rules.php",
+                "data" => [
+                    "title" => "Règles du forum de musique",
+                    'description' => "Ce forum de musique possède des règles d'utilisation qu'il convient de respecter sous peine d'être banni du forum"
+                ]
             ];
         }
 
@@ -53,12 +56,12 @@
          */
         public function mentionsLegales()
         {
-            // Définit le titre de la page
-            $title = "Mentions légales du forum de musique";
-            // definit la description de la page
-            $description = "Les mentions légales présentent principalement l'auteur du forum, les droits d'auteur et l'hébergeur du forum.";
             return [
-                "view" => VIEW_DIR."home/mentionsLegales.php"
+                "view" => VIEW_DIR."home/mentionsLegales.php",
+                "data" => [
+                    "title" => "Mentions légales du forum de musique",
+                    'description' => "Les mentions légales présentent principalement l'auteur du forum, les droits d'auteur et l'hébergeur du forum."
+                ]
             ];
         }
 
@@ -84,11 +87,13 @@
             include(VIEW_DIR."forum/topicsList.php");
         }
 
+        /**
+         * Méthode pour incrémenter un compteur et l'afficher pour une requête ajax
+         */
         public function ajax()
         {
             $nb = $_GET['nb'];
             $nb++;
             echo $nb;
-        //    include(VIEW_DIR."ajax.php");
         }
     }

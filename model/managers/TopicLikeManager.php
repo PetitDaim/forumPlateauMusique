@@ -4,17 +4,24 @@
     use App\Manager;
     use App\DAO;
 
-    class TopicLikeManager extends Manager{
+    class TopicLikeManager extends Manager
+    {
 
         protected $className = "Model\Entities\TopicLike";
         protected $tableName = "topiclike";
 
 
+        /**
+         * Constructeur
+         */
         public function __construct()
         {
             parent::connect();
         }
 
+        /**
+         * Renvoie le liste de tous les likes de topics de l'utilisateur
+         */
         public function findAllWhereUser( $id, $order = null)
         {
             // Set order by query in $order givven

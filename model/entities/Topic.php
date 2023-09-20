@@ -10,7 +10,8 @@
     use Model\Managers\PostManager;
 
     // final => la class Topic ne peut pas avoir d'enfants et elle hérite de laz classe Entity
-    final class Topic extends Entity{
+    final class Topic extends Entity
+    {
 
         // liste des propriétés de la classe Topic selons le principe d'encapsulation mes propriétés sont privées, 
         // c'est à dire qu'elles ne seront accessible que depuis la classe
@@ -23,7 +24,11 @@
         private $creationDate;
         private $closed;
 
-        public function __construct($data){         
+        /**
+         * Constructeur
+         */
+        public function __construct($data)
+        {         
             $this->hydrate($data);        
         }
  
@@ -212,16 +217,21 @@
          */
         public function getLikers() 
         {
+                // Initialise la chaine de retour
                 $retval = "";
+                // Récupère la liste de tous les likes du topic
                 $topicLikes = $this->getTopicLikes();
+                // S'il y en a :
                 if( $topicLikes ) {
                         $count = 0;
                         foreach( $topicLikes as $topicLike )
                         {
-                                $retval .= ($count?"\r\n":"").$topicLike->getUser()->getPseudo();
+                                // Ajoute à la chaine de retour, le pseudo du liker (précédé d'un retour à la ligne si ce n'est pas le premier )
+                                $retval .= ( $count ? "\r\n" : "" ) . $topicLike->getUser()->getPseudo();
                                 $count++;
                         }
                 }
+                // Renvoie la chaine de retour
                 return $retval;
         }
 
