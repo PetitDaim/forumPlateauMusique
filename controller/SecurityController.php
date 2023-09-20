@@ -85,9 +85,9 @@
                 $hasErrors = true;
             }
             // Si les deux mots de passe ne correspondent pas : Affiche une erreur
-            else if( $passwordConfirm != $password ) 
+            if( $passwordConfirm != $password ) 
             {
-                Session::addErrors('password', "Les deux mots de passes sont différents");
+                Session::addErrors('passwordConfirm', "Les deux mots de passes sont différents");
                 $hasErrors = true;
             }
             // Si l'EMail' a une longuer inférieure à 8 : Affiche une erreur
@@ -523,6 +523,89 @@
             $this->redirectTo( "security", "messagesList" );
         }
 
+        /**
+         * Methode pour la modification du mot de passe
+         */
+        public function passwordModifyForm()
+        {
+            return [
+                "view" => VIEW_DIR."security/passwordModifyForm.php",
+                "data" => [ 
+                    'password' => "",
+                    'passwordModify' => "",
+                    'passwordConfirm' => "",
+                    "title" => "Modification du mot de passe",
+                    "description" => "Modification du mot de passe",
+                    "noIndex" => true
+                ]
+            ];
+        }
+
+        /**
+         * Methode pour la modification du mot de passe
+         */
+        public function passwordModify()
+        {
+            $password = filter_input( INPUT_POST, "password", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+            $passwordNew = filter_input( INPUT_POST, "passwordNew", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+            $passwordConfirm = filter_input( INPUT_POST, "passwordConfirm", FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+            // Si le mot de passe a une longuer inférieure à 12 : Affiche une erreur
+            if( strlen( $passwordNew ) < 12 ) 
+            {
+                Session::addErrors('passwordNew', "Le mot de passe doit contenir au moins 12 caractères");
+                $hasErrors = true;
+            }
+            // Si le mot de passe ne correspond pas aux standards de sécurilté : Affiche une erreur
+            else if( ! preg_match( '/^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_=?*+#."&§%°()\|\[\]\-\$\^\@\/]{12,128}$/', $passwordNew ) ) 
+            {
+                Session::addErrors('passwordNew', "Le mot de passe doit contenir au moins deux minuscules, deux Majuscules, deux chiffres, deux caractères spéciaux et aucuns caractèrs en double" );
+                $hasErrors = true;
+            }
+            // Si les deux mots de passe ne correspondent pas : Affiche une erreur
+            if( $passwordConfirm != $passwordNew )
+            {
+                Session::addErrors('passwordConfirm', "Les deux mots de passes sont différents");
+                $hasErrors = true;
+            }
+            // Récupère le user connecté
+            $user = Session::getUser();
+            // Vérifie si le mot de passe correspond
+            if( ! password_verify( $password, $user->getPassword() ) ) 
+            {
+                Session::addErrors('password', "Votre mot de passe ne correspond pas");
+                $hasErrors = true;
+            }
+            // S'il n'y a toujours pas d'erreur
+            if( ! $hasErrors ) 
+            {
+                // Update le user en BDD en hashant le mot de passe
+                return (new UserManager() )->updateWhereId(
+                    [
+                        "pseudo" => $user->getPseudo(),
+                        "password" => password_hash( $password, PASSWORD_DEFAULT ), 
+                        "email" => $user->getEmail(),
+                        "avatar" => $user->getAvatar(),
+                        "banned" => $user->getBanned(),
+                        "role" => $user->getRole()
+                    ],
+                    $user->getId()
+                );
+                // Affiche un message de succes et redirige sur la page de login
+                Session::addFlash('success', "Votre mot de passe a bien été modifié");
+                $this->redirectTo( "security", "loginForm" );
+            }
+            return [
+                "view" => VIEW_DIR."security/passwordModifyForm.php",
+                "data" => [ 
+                    'password' => $password,
+                    'passwordNew' => $passwordNew,
+                    'passwordConfirm' => $passwordConfirm,
+                    "title" => "Modification du mot de passe",
+                    "description" => "Modification du mot de passe",
+                    "noIndex" => true
+                ]
+            ];
+        }
         /*public function ajax(){
             $nb = $_GET['nb'];
             $nb++;

@@ -34,6 +34,16 @@
     </form>
 <?php
     }
+    // Si on est le user dont on affiche le détail
+    if( isset( $user ) && $user && ( $user == App\Session::getUser() ) )
+    {
+?>
+    <!-- BOUTON pour modifier le mot de passe -->
+    <form action="./?ctrl=security&action=passwordModifyForm" method="POST">
+        <button type="submit">Modifier le mot de passe ...</button>
+    </form>
+<?php
+    }
 ?>
 </figure>
 <?php
